@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS2 Menu</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: grey;
+            font-size: 32px;
+        }
+        .menu div {
+            margin: 15px 0;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        .selected {
+            color: cyan;
+            text-shadow: 0px 0px 8px cyan;
+        }
+        .animation {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: url('https://i.makeagif.com/media/6-09-2021/iWXqKj.gif') no-repeat center;
+            background-size: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation"></div>
+    <div class="menu">
+        <div id="option1" class="selected">Browser</div>
+        <div id="option2">System Configuration</div>
+    </div>
+    <script>
+        let options = ["option1", "option2"];
+        let links = ["browser.html", "systemconfig.html"];
+        let currentIndex = 0;
+        
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "ArrowDown" && currentIndex < options.length - 1) {
+                currentIndex++;
+            } else if (event.key === "ArrowUp" && currentIndex > 0) {
+                currentIndex--;
+            } else if (event.key === "Enter") {
+                window.location.href = links[currentIndex];
+            }
+            
+            document.querySelectorAll(".menu div").forEach((el, index) => {
+                if (index === currentIndex) {
+                    el.classList.add("selected");
+                } else {
+                    el.classList.remove("selected");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

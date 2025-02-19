@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS2 Emulator Web Sound Test</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0d0d14;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #18a5be;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #555;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .info-box {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f1f1f1;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        /* Styling for the buttons or interactions (if added in future) */
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #059eb5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0ea2cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>PS2 -Online Web Sound Test</h1>
+    
+    <h2>Controls:</h2>
+    <div class="info-box">
+        <p>Press <code>Left</code> or <code>Right</code> Arrow Keys to hear the Option Selected Sound.</p>
+        <p>Press <code>Enter</code> Key to hear the Game Disc Select Sound.</p>
+    </div>
+
+    <div class="info-box">
+        <h3>Purpose of this page:</h3>
+        <p>This page allows you to test and debug the sound playback when specific keys are pressed. It plays different sounds based on the <code>Enter</code> or <code>Arrow</code> keys, which is useful for debugging web-based emulators or sound effects.</p>
+        <p>Use the <code>Enter</code> key for the Game Disc Start sound and the <code>Arrow</code> keys for navigation sound.</p>
+    </div>
+
+    <script>
+        // Function to play a sound based on the key pressed
+        function playSound(key) {
+            let sound;
+            if (key === 'Enter') {
+                console.log("Playing Enter key sound");  // Debug message
+                sound = new Audio('ps2-start-game-sound.mp3');  // Path for Enter key sound
+            } else if (key === 'ArrowRight' || key === 'ArrowLeft') {
+                console.log("Playing Select sound");  // Debug message
+                sound = new Audio('ps2-select-sound.mp3');  // Path for navigation sound
+            } else {
+                console.log("Playing Default sound");  // Debug message
+                sound = new Audio('default-sound.mp3');  // Path for default sound
+            }
+            sound.play();
+        }
+
+        // Listen for keydown events and play sound based on the key pressed
+        document.addEventListener('keydown', (event) => {
+            playSound(event.key);  // Play sound based on the key pressed
+        });
+    </script>
+</body>
+</html>

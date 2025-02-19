@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered Menu Transition</title>
+    <style>
+        body {
+            background-image: url('https://moewalls.com/wp-content/uploads/2022/03/playstation-2-clock-thumb-728x410.jpg');
+            background-size: cover;
+            background-position: 25% center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            filter: brightness(1) contrast(1) saturate(1);
+        }
+
+        .clock-hand {
+            position: absolute;
+            width: 4px;
+            height: 100px;
+            background: red;
+            transform-origin: bottom;
+            transition: transform 1s linear;
+        }
+
+        .system-time {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .menu-container {
+            position: absolute;
+            top: 40%;
+            left: 60%;
+            width: 300px;
+            height: 50px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .menu-item {
+            font-size: 24px;
+            color: gray;
+            font-family: Arial, sans-serif;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            cursor: pointer;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        .menu-item.active {
+            color: cyan;
+            font-weight: bold;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .menu-item.left {
+            transform: translateX(-100px) scale(0.7);
+            opacity: 0;
+        }
+
+        .menu-item.right {
+            transform: translateX(100px) scale(0.7);
+            opacity: 0;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            width: 300px;
+            text-align: center;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown input {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 5px;
+            width: 100%;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-hand" id="clockHand"></div>
+    <div class="system-time" id="systemTime"></div>
+
+    <div class="menu-container">
+        <div class="menu" id="menu">
+            <span class="menu-item active" data-dropdown="system-time">System Time</span>
+            <span class="menu-item right" data-dropdown="graphics-settings">Graphics Settings</span>
+            <span class="menu-item right" data-dropdown="controller-config">Controller Bindings</span>
+            <span class="menu-item right" data-dropdown="back-button">Back</span>
+        </div>
+    </div>
+
+    <div class="dropdown" id="system-time">
+        <label>Set Time: <input type="time" id="setTime"></label>
+    </div>
+
+    <div class="dropdown" id="graphics-settings">
+        <label>Brightness: <input type="range" id="brightness" min="0.5" max="2" step="0.1" value="1"></label><br>
+        <label>Contrast: <input type="range" id="contrast" min="0.5" max="2" step="0.1" value="1"></label><br>
+        <label>Gamma: <input type="range" id="gamma" min="0.5" max="2" step="0.1" value="1"></label><br>
+    </div>
+
+    <div class="dropdown" id="controller-config">
+        <p>Controller Bindings Coming Soon...</p>
+    </div>
+    
+    <div class="dropdown" id="back-button">
+        <p>Navigate Back To Main Menu</p>
+    </div>
+
+    <script>
+        let clockOffset = 0;
+
+        function updateClock() {
+            const now = new Date();
+            const seconds = now.getSeconds();
+            const degrees = seconds * 6;
+            const hand = document.getElementById("clockHand");
+
+            hand.style.top = `calc(50% + ${clockOffset}px)`;
+            hand.style.left = "43%";
+            hand.style.transform = `translate(-50%, -100%) rotate(${degrees}deg)`;
+            
+            document.getElementById("systemTime").textContent = now.toLocaleTimeString();
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        const menuItems = document.querySelectorAll('.menu-item');
+        let selectedIndex = 0;
+
+        function updateMenu() {
+            menuItems.forEach((item, index) => {
+                item.classList.remove("active", "left", "right");
+                if (index === selectedIndex) {
+                    item.classList.add("active");
+                } else if (index < selectedIndex) {
+                    item.classList.add("left");
+                } else {
+                    item.classList.add("right");
+                }
+            });
+        }
+        
+        document.getElementById("back-button").addEventListener("click", () => {
+            setTimeout(() => {
+                window.location.href = "home.html";
+            }, 1000); // 1 second delay before redirect
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                selectedIndex = (selectedIndex + 1) % menuItems.length;
+            } else if (event.key === 'ArrowLeft') {
+                selectedIndex = (selectedIndex - 1 + menuItems.length) % menuItems.length;
+            } else if (event.key === 'Enter') {
+                const activeItem = document.querySelector('.menu-item.active');
+                if (activeItem) {
+                    const dropdownId = activeItem.getAttribute('data-dropdown');
+                    document.querySelectorAll('.dropdown').forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                    document.getElementById(dropdownId).classList.add('active');
+                }
+            }
+            updateMenu();
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdownId = item.getAttribute('data-dropdown');
+                document.querySelectorAll('.dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                document.getElementById(dropdownId).classList.add('active');
+            });
+        });
+
+        document.getElementById("brightness").addEventListener("input", function() {
+            document.body.style.filter = `brightness(${this.value}) contrast(${document.getElementById("contrast").value}) saturate(${document.getElementById("gamma").value})`;
+        });
+
+        document.getElementById("contrast").addEventListener("input", function() {
+            document.body.style.filter = `brightness(${document.getElementById("brightness").value}) contrast(${this.value}) saturate(${document.getElementById("gamma").value})`;
+        });
+
+        document.getElementById("gamma").addEventListener("input", function() {
+            document.body.style.filter = `brightness(${document.getElementById("brightness").value}) contrast(${document.getElementById("contrast").value}) saturate(${this.value})`;
+        });
+    </script>
+</body>
+</html>
