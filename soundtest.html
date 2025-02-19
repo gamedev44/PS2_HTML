@@ -112,6 +112,13 @@
         document.addEventListener('keydown', (event) => {
             playSound(event.key);  // Play sound based on the key pressed
         });
+
+        document.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace') {
+        window.location.href = 'home.html'; // Redirect to example.html when Backspace is pressed
+    }
+});
+
     </script>
 </body>
 </html>

@@ -254,6 +254,12 @@
                 gameCases.forEach(gameCase => gameCase.classList.remove('hidden'));
             }
         }
+        document.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace') {
+        window.location.href = 'browser.html'; // Redirect to example.html when Backspace is pressed
+    }
+});
+
     </script>
 
 </body>

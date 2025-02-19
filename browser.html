@@ -77,6 +77,13 @@
             document.getElementById("selector").style.left = positions[currentIndex];
             document.getElementById("optionText").textContent = optionTexts[currentIndex];
         });
+
+        document.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace') {
+        window.location.href = 'home.html'; // Redirect to example.html when Backspace is pressed
+    }
+});
+
     </script>
 </body>
 </html>

@@ -221,6 +221,14 @@
         document.getElementById("gamma").addEventListener("input", function() {
             document.body.style.filter = `brightness(${document.getElementById("brightness").value}) contrast(${document.getElementById("contrast").value}) saturate(${this.value})`;
         });
+
+        document.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace') {
+        window.location.href = 'home.html'; // Redirect to example.html when Backspace is pressed
+    }
+});
+
+
     </script>
 </body>
 </html>
